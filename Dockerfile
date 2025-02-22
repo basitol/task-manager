@@ -1,3 +1,7 @@
+# This Dockerfile is used for local development
+# For production deployment, we use Render's native PHP support
+# To run locally: docker-compose up --build
+
 FROM php:8.2-fpm
 
 # Install system dependencies
