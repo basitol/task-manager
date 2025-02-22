@@ -8,7 +8,9 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     zip \
-    unzip
+    unzip \
+    nginx \
+    supervisor
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -25,12 +27,20 @@ WORKDIR /var/www
 # Copy existing application directory
 COPY . .
 
-# Install dependencies
-RUN composer install
+# Install PHP dependencies
+RUN composer install --no-dev --optimize-autoloader
 
-# Set permissions
-RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache 
+# Set permissions for storage and cache
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
+# Copy NGINX configuration
+COPY ./docker/nginx/nginx.conf /etc/nginx/sites-available/default
+
+# Copy Supervisor configuration
+COPY ./docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Expose port for Render
 EXPOSE 8000
 
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+# Start Supervisor to manage NGINX and PHP-FPM
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
