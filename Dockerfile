@@ -1,4 +1,3 @@
-# Dockerfile
 FROM php:8.2-fpm-alpine
 
 # Install system dependencies
@@ -38,10 +37,9 @@ RUN chown -R www-data:www-data \
     /var/www/storage \
     /var/www/bootstrap/cache
 
-# Start script
-COPY docker/start.sh /start.sh
-RUN chmod +x /start.sh
+# Make the start script executable
+RUN chmod +x /var/www/docker/start.sh
 
 EXPOSE 8000
 
-CMD ["/start.sh"]
+CMD ["/var/www/docker/start.sh"]
