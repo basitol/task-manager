@@ -1,15 +1,11 @@
 services:
   - type: web
     name: task-manager-api
-    env: php
-    buildCommand: |
-      composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
-      php artisan key:generate
-      php artisan config:cache
-      php artisan route:cache
-      php artisan view:cache
-      php artisan migrate --force
-    startCommand: php artisan serve --host 0.0.0.0 --port $PORT
+    env: docker
+    region: oregon
+    plan: free
+    branch: main
+    healthCheckPath: /
     envVars:
       - key: APP_KEY
         generateValue: true
@@ -17,8 +13,6 @@ services:
         value: production
       - key: APP_DEBUG
         value: false
-      - key: APP_URL
-        value: https://task-manager-api-6lr6.onrender.com
       - key: DB_CONNECTION
         value: mysql
       - key: DB_HOST
@@ -45,3 +39,4 @@ services:
 databases:
   - name: task-manager-db
     plan: free
+    region: oregon
