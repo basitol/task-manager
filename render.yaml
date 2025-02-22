@@ -12,7 +12,7 @@ services:
       - key: APP_DEBUG
         value: false
       - key: APP_URL
-        value: https://your-app-url.onrender.com
+        value: https://task-manager-api-6lr6.onrender.com
       - key: DB_CONNECTION
         value: mysql
       - key: DB_HOST
