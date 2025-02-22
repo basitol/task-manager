@@ -3,7 +3,7 @@ services:
     name: task-manager-api
     env: php
     buildCommand: composer install && php artisan migrate --force
-    startCommand: heroku-php-apache2 public/
+    startCommand: supervisor -c /etc/supervisor/conf.d/supervisord.conf
     envVars:
       - key: APP_KEY
         generateValue: true
